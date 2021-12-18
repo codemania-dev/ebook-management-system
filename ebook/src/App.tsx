@@ -1,8 +1,11 @@
 import React from 'react';
 import './App.css';
 import Book, {IBook} from './components/Book'
+import Upload from './components/Upload';
 
 function App() {
+
+  const [ open, setOpen ] = React.useState<boolean>(false);
 
   const books: IBook[] = [
     {
@@ -70,8 +73,10 @@ function App() {
        <input type='search' name="search-text" id="" className="search-box" placeholder='search ebook' />
       </header>
       <div className="body">
-        { books && books.map((book: IBook, index: number) => (<Book title={book.title} author={book.author} pages={book.pages} date={book.date} uploader={book.uploader} download={book.download} />)) } 
+        { books && books.map((book: IBook, index: number) => (<Book title={book.title} author={book.author} pages={book.pages} date={book.date} uploader={book.uploader} download={book.download} />)) }
+        <button type='button' id='upload-btn' onClick={() => setOpen(!open)}>Upload EBook</button> 
       </div>
+      { open && <Upload setOpen={setOpen} open={open}/> }
     </div>
   );
 }
