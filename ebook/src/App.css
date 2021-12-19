@@ -39,6 +39,30 @@
   transition: all ease-in-out 0.6s;
   background-color: rgba(255, 255, 255, 0.8);
 }
+
+/* Media Query for App Header */
+@media screen and (max-width: 720px) {
+  .App-header {
+    padding: 0 7.5%;
+    height: 60px;
+  }
+  .logo {
+    font-size: large;
+  }
+  .search-box {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 460px) {
+  .App-header {
+    padding: 0 5%;
+  }
+  .search-box {
+    width: 50%;
+  }
+}
+
+
 .body {
   width: 100%;
   height: auto;
@@ -51,6 +75,46 @@
   overflow-y: scroll;
 }
 
+@media screen and (max-width: 1200px) {
+  .body {
+    grid-template-columns: repeat(3, 1fr);
+    
+  }
+}
+
+  @media screen and (max-width: 760px) {
+    .body {
+      /* grid-template-columns: repeat(3, 1fr); */
+      padding: calc(70px + 7vh) 7.5%;
+    }
+    .book-title {
+      font-size: 1.2rem !important;
+    }
+    .book-details > p {
+    font-size: .8rem !important; 
+  }
+  .book-details > p > span {
+    font-size: 1rem !important;
+  }
+}
+
+  @media screen and (max-width: 520px) {
+    .body {
+      grid-template-columns: repeat(2, 1fr);
+      padding: calc(70px + 7vh) 5%;
+      gap: 5%;
+    }
+    .book-title {
+      font-size: 1.1rem !important;
+    }
+    .book-details > p {
+    font-size: .7rem !important; 
+  }
+  .book-details > p > span {
+    font-size: .85rem !important;
+  }
+}
+
 /* Show Upload Form Button */
 #upload-btn {
   position: fixed;
@@ -59,7 +123,7 @@
   border: none;
   padding: 15px;
   border-radius: 5px;
-  background-color: rgba(170, 11, 11, 0.8);
+  background-color: rgba(170, 11, 11, 0.6);
   backdrop-filter: blur(5px);
   outline: none;
   color: #fff;
@@ -224,3 +288,17 @@
   transition: all ease-in-out 0.6s;
   background-color: rgba(170, 11, 11, 1);
 }
+  @media screen and (max-width: 900px) {
+    .upload-container {
+      width: 75%
+    }
+    .book {
+      margin-bottom: 5px;
+    }
+}
+  
+  @media screen and (max-width: 520px) {
+    .upload-container {
+      width: 100%
+    }
+  }
