@@ -1,0 +1,304 @@
+.App {
+  background-color: #282c34;
+  /* position: relative; */
+}
+
+.App-header {
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  width: 100%;
+  padding: 0 15%;
+  box-sizing: border-box;
+  z-index: 10;
+  position: fixed;
+  top: 0;
+}
+.logo {
+  color: #282c34;
+  font-size: x-large;
+  font-weight: bold;
+}
+.logo > span {
+  color: rgba(170, 11, 11, 0.878);
+  font-style: italic;
+  font-weight: 400;
+}
+.search-box {
+  background-color: rgba(255, 255, 255, 0.5);
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  color: #282c34;
+}
+.search-box:hover {
+  transition: all ease-in-out 0.6s;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Media Query for App Header */
+@media screen and (max-width: 720px) {
+  .App-header {
+    padding: 0 7.5%;
+    height: 60px;
+  }
+  .logo {
+    font-size: large;
+  }
+  .search-box {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 460px) {
+  .App-header {
+    padding: 0 5%;
+  }
+  .search-box {
+    width: 50%;
+  }
+}
+
+
+.body {
+  width: 100%;
+  height: auto;
+  padding: calc(70px + 7vh) 15%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  gap: 3.3%;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+@media screen and (max-width: 1200px) {
+  .body {
+    grid-template-columns: repeat(3, 1fr);
+    
+  }
+}
+
+  @media screen and (max-width: 760px) {
+    .body {
+      /* grid-template-columns: repeat(3, 1fr); */
+      padding: calc(70px + 7vh) 7.5%;
+    }
+    .book-title {
+      font-size: 1.2rem !important;
+    }
+    .book-details > p {
+    font-size: .8rem !important; 
+  }
+  .book-details > p > span {
+    font-size: 1rem !important;
+  }
+}
+
+  @media screen and (max-width: 520px) {
+    .body {
+      grid-template-columns: repeat(2, 1fr);
+      padding: calc(70px + 7vh) 5%;
+      gap: 5%;
+    }
+    .book-title {
+      font-size: 1.1rem !important;
+    }
+    .book-details > p {
+    font-size: .7rem !important; 
+  }
+  .book-details > p > span {
+    font-size: .85rem !important;
+  }
+}
+
+/* Show Upload Form Button */
+#upload-btn {
+  position: fixed;
+  bottom: 10vh;
+  right: 5vw;
+  border: none;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: rgba(170, 11, 11, 0.6);
+  backdrop-filter: blur(5px);
+  outline: none;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#upload-btn:hover {
+  transition: all ease-in-out 0.6s;
+  background-color: rgba(170, 11, 11, 1);
+}
+
+/* Book Styling */
+
+.book {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 350px;
+  border-radius: 10px;
+  background-color: #282c34;
+  box-shadow: 5px 5px 5px #1e1e22, -5px -5px 5px #343a44;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-bottom: 50px;
+  overflow: hidden;
+}
+.book:hover {
+  transition: all ease-in-out 0.6s;
+  transform: translateY(-10px);
+  box-shadow: 10px 10px 10px #1e1e22, -10px -10px 10px #343a44;
+}
+
+.book:hover .book-details {
+  transition: all ease-in-out 0.6s;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.book-title {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  height: 85%;
+}
+.book-details {
+  position: absolute;
+  bottom: -155px;
+  height: 170px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(3px);
+  border-radius: 10px;
+  overflow-y: hidden;
+  padding-top: 25px;
+  padding-bottom: 15px;
+}
+.book-details > p {
+  color: rgba(170, 11, 11, 0.878);
+  font-size: small;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  margin: 0 0 10px 0;
+}
+.book-details > p > span {
+  color: #282c34;
+  font-size: large;
+  font-weight: 700;
+  margin-left: 10px;
+}
+.book-details > button {
+  margin: 10px 0;
+  cursor: pointer;
+  outline: none;
+  border: 3px solid #282c34;
+  border-radius: 10px;
+  background: none;
+  color: #282c34;
+  padding: 5px;
+  font-weight: bold;
+}
+.book-details > button:hover {
+  transition: all ease-in-out 0.6s;
+  background-color: #282c34;
+  color: #fff;
+}
+
+/* Upload Form Design */
+
+.upload-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 35%;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 20;
+  padding: 0 5%;
+  box-sizing: border-box;
+}
+.upload-container > input, .upload-container > label {
+  background-color: rgba(255, 255, 255, 0.5);
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  color: #282c34;
+  margin-bottom: 10px;
+}
+
+.upload-container > input:hover, .upload-container > label:hover {
+  transition: all ease-in-out 0.6s;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.upload-container > button {
+  margin: 10px 0;
+  cursor: pointer;
+  outline: none;
+  border-radius: 10px;
+  background: none;
+  background-color: #282c34;
+  color: #fff;
+  padding: 10px 5px;
+  font-weight: bold;
+}
+.upload-container > button:hover {
+  transition: all ease-in-out 0.6s;
+  opacity: .8;
+}
+.upload-container > h1 {
+  font-size: xx-large;
+  color: #242424;
+}
+.close-btn {
+  position: absolute;
+  top: 5vh;
+  right: 5vw;
+  border: none;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: rgba(170, 11, 11, 0.8) !important;
+  backdrop-filter: blur(5px);
+  outline: none;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close-btn:hover {
+  transition: all ease-in-out 0.6s;
+  background-color: rgba(170, 11, 11, 1);
+}
+  @media screen and (max-width: 900px) {
+    .upload-container {
+      width: 75%
+    }
+    .book {
+      margin-bottom: 5px;
+    }
+}
+  
+  @media screen and (max-width: 520px) {
+    .upload-container {
+      width: 100%
+    }
+  }
