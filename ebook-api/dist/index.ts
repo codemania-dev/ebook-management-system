@@ -28,6 +28,7 @@ const BookSchema = new mongoose.Schema({
   pages: String,
   date: String,
   uploader: String,
+  download: String,
   file: String
 });
 

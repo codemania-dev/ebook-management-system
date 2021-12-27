@@ -172,6 +172,7 @@
   align-items: center;
   padding: 10px;
   height: 85%;
+  text-transform: uppercase;
 }
 .book-details {
   position: absolute;
@@ -188,7 +189,13 @@
   overflow-y: hidden;
   padding-top: 25px;
   padding-bottom: 15px;
+  overflow-y: scroll;
 }
+
+.book-details::-webkit-scrollbar {
+    display: none;
+}
+
 .book-details > p {
   color: rgba(170, 11, 11, 0.878);
   font-size: small;
@@ -202,7 +209,7 @@
   color: #282c34;
   font-size: large;
   font-weight: 700;
-  margin-left: 10px;
+  text-transform: uppercase;
 }
 .book-details > a {
   margin: 10px 0;

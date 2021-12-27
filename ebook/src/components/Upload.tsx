@@ -66,26 +66,28 @@ function Upload({setOpen, open, setBooks}) {
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
               
-                fetch('http://localhost:5000/upload-book', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        title,
-                        author,
-                        pages: pages.toString(),
-                        uploader,
-                        download: downloadURL,
-                        date: new Date(Date.now()).toLocaleDateString()
-                    }),
-                    headers: {"Content-Type": "application/json"}
+                fetch(`${process.env.REACT_APP_API as string}upload-book`, {
+                  method: "POST",
+                  body: JSON.stringify({
+                    title,
+                    author,
+                    pages: pages.toString(),
+                    uploader,
+                    download: downloadURL,
+                    date: new Date(Date.now()).toLocaleDateString(),
+                  }),
+                  headers: { "Content-Type": "application/json" },
                 })
-                .then((res) => res.json())
-                .then((res: IBook[]) => {
+                  .then((res) => res.json())
+                  .then((res: IBook[]) => {
                     // set books
                     setBooks(res);
                     clearInput();
                     setOpen(!open);
-                })
-                .catch(err => {console.log(err)})
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
             });
           }
         );

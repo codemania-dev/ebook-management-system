@@ -14,12 +14,13 @@ function App() {
   }
 
   React.useEffect(() => {
-    fetch("http://localhost:5000/fetch-books")
+    fetch(`${process.env.REACT_APP_API as string}fetch-books`)
       .then((res) => res.json())
       .then((res: IBook[]) => {
         setBooks(res);
         setTemp(res);
-      }).catch(err => console.log(err))
+      })
+      .catch((err) => console.log(err));
 
   }, []);
 
