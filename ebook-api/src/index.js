@@ -17,6 +17,7 @@ const BookSchema = new mongoose_1.default.Schema({
     pages: String,
     date: String,
     uploader: String,
+    download: String,
     file: String
 });
 const BookModel = mongoose_1.default.model("Book", BookSchema);

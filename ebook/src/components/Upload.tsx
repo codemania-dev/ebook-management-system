@@ -58,7 +58,7 @@ function Upload({setOpen, open, setBooks}) {
 
         uploadTask.on(
           "state_changed",
-          (snapshot) => {},
+          (snapshot) => {setMessage("Saving...");},
           (error) => {
             setMessage('Error occurred!');
             return;
@@ -108,7 +108,7 @@ function Upload({setOpen, open, setBooks}) {
             <button type='button' onClick={() => clearInput()}>Clear</button>
             <button type='button' className='close-btn' onClick={() => setOpen(!open)}>close</button>
 
-            <p className="message">*{ message }</p>
+            <p className="message">{ message }</p>
 
         </div>
     )
