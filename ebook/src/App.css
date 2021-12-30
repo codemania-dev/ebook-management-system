@@ -1,5 +1,6 @@
 .App {
   background-color: #282c34;
+  min-height: 100vh;
   /* position: relative; */
 }
 
@@ -171,11 +172,12 @@
   align-items: center;
   padding: 10px;
   height: 85%;
+  text-transform: uppercase;
 }
 .book-details {
   position: absolute;
-  bottom: -155px;
-  height: 170px;
+  bottom: -170px;
+  height: 200px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -187,22 +189,29 @@
   overflow-y: hidden;
   padding-top: 25px;
   padding-bottom: 15px;
+  overflow-y: scroll;
 }
+
+.book-details::-webkit-scrollbar {
+    display: none;
+}
+
 .book-details > p {
   color: rgba(170, 11, 11, 0.878);
   font-size: small;
   font-weight: 500;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin: 0 0 10px 0;
+  margin: 0 0 6px 0;
 }
 .book-details > p > span {
   color: #282c34;
   font-size: large;
   font-weight: 700;
-  margin-left: 10px;
+  text-transform: uppercase;
 }
-.book-details > button {
+.book-details > a {
   margin: 10px 0;
   cursor: pointer;
   outline: none;
@@ -213,7 +222,7 @@
   padding: 5px;
   font-weight: bold;
 }
-.book-details > button:hover {
+.book-details > a:hover {
   transition: all ease-in-out 0.6s;
   background-color: #282c34;
   color: #fff;

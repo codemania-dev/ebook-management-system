@@ -1,6 +1,11 @@
 import React from 'react'
 
-function Upload({setOpen, open}) {
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
+
+import { IBook } from './Book';
+import storage from '../firebase';
+
+function Upload({setOpen, open, setBooks}) {
 
     const [ title, setTitle ] = React.useState<string>('');
     const [ author, setAuthor ] = React.useState<string>('');
@@ -8,27 +13,30 @@ function Upload({setOpen, open}) {
     const [ uploader, setUploader ] = React.useState<string>('');
     const [ name, setName ] = React.useState<string>('');
     const [ message, setMessage ] = React.useState<string>('');
+    const [ file, setFile ] = React.useState<File>();
 
-    function selectFile(e: React.ChangeEvent<HTMLInputElement>): File | null {
+    function selectFile(e: React.ChangeEvent<HTMLInputElement>): void {
        const file: File = e.target.files?.[0] as File;
 
        if (!file) {
            setMessage('no file selected!')
-           return null;
+           return;
        }
 
        if (file?.size && file?.size > 10_000_000) {
            setMessage('file too large!')
-           return null;
+           return;
        }
        if (file?.name && ![ 'pdf', "PDF" ].includes(file?.name.split('.').at(-1) as string)) {
            setMessage('wrong file format!')
-           return null;
+           return;
        }
 
        setName(file?.name.split('.').at(0)?.slice(0, 25) as string + ((file?.name.split('.').at(0) as string)?.length < 25 ? "" : "..."));
 
-       return file;
+        setFile(file);
+
+       return;
     }
 
     function clearInput(): void {
@@ -39,6 +47,50 @@ function Upload({setOpen, open}) {
     }
 
     function uploadEbook(): void {
+        if ([ title, author, uploader ].includes('') || pages === 0 || file === undefined) {
+            setMessage('please fill out all fields!')
+            return;
+        }
+
+        const fileRef = ref(storage, `${Date.now()}.pdf`);
+
+        const uploadTask = uploadBytesResumable(fileRef, file);
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {setMessage("Saving...");},
+          (error) => {
+            setMessage('Error occurred!');
+            return;
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              
+                fetch(`${process.env.REACT_APP_API as string}upload-book`, {
+                  method: "POST",
+                  body: JSON.stringify({
+                    title,
+                    author,
+                    pages: pages.toString(),
+                    uploader,
+                    download: downloadURL,
+                    date: new Date(Date.now()).toLocaleDateString(),
+                  }),
+                  headers: { "Content-Type": "application/json" },
+                })
+                  .then((res) => res.json())
+                  .then((res: IBook[]) => {
+                    // set books
+                    setBooks(res);
+                    clearInput();
+                    setOpen(!open);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+            });
+          }
+        );
 
     }
 
@@ -56,7 +108,7 @@ function Upload({setOpen, open}) {
             <button type='button' onClick={() => clearInput()}>Clear</button>
             <button type='button' className='close-btn' onClick={() => setOpen(!open)}>close</button>
 
-            <p className="message">*{ message }</p>
+            <p className="message">{ message }</p>
 
         </div>
     )
