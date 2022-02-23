@@ -117,9 +117,9 @@
 }
 
 /* Show Upload Form Button */
-#upload-btn {
+#upload-btn, #upload-btn1 {
   position: fixed;
-  bottom: 10vh;
+  bottom: 12vh;
   right: 5vw;
   border: none;
   padding: 15px;
@@ -132,7 +132,11 @@
   cursor: pointer;
 }
 
-#upload-btn:hover {
+#upload-btn1 {
+  bottom: 5vh;
+}
+
+#upload-btn:hover, #upload-btn1:hover {
   transition: all ease-in-out 0.6s;
   background-color: rgba(170, 11, 11, 1);
 }
@@ -145,8 +149,8 @@
   flex-direction: column;
   height: 350px;
   border-radius: 10px;
-  background-color: #282c34;
   box-shadow: 5px 5px 5px #1e1e22, -5px -5px 5px #343a44;
+  /* background-color: #282c34; */
   cursor: pointer;
   box-sizing: border-box;
   margin-bottom: 50px;
@@ -211,7 +215,7 @@
   font-weight: 700;
   text-transform: uppercase;
 }
-.book-details > a {
+.book-details > button, .book-details > a {
   margin: 10px 0;
   cursor: pointer;
   outline: none;
@@ -222,7 +226,7 @@
   padding: 5px;
   font-weight: bold;
 }
-.book-details > a:hover {
+.book-details > button:hover, .book-details > a:hover {
   transition: all ease-in-out 0.6s;
   background-color: #282c34;
   color: #fff;
@@ -245,7 +249,7 @@
   padding: 0 5%;
   box-sizing: border-box;
 }
-.upload-container > input, .upload-container > label {
+.upload-container > input, .upload-container > label, .upload-container > select {
   background-color: rgba(255, 255, 255, 0.5);
   outline: none;
   border: none;
@@ -255,7 +259,7 @@
   margin-bottom: 10px;
 }
 
-.upload-container > input:hover, .upload-container > label:hover {
+.upload-container > input:hover, .upload-container > label:hover, .upload-container > select:hover {
   transition: all ease-in-out 0.6s;
   background-color: rgba(255, 255, 255, 0.8);
 }

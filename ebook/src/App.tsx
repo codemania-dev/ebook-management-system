@@ -2,15 +2,22 @@ import React from "react";
 import "./App.css";
 import Book, { IBook } from "./components/Book";
 import Upload from "./components/Upload";
+import AdminLogin from './components/AdminLogin'
+
+
+type User = 'visitor' | 'admin';
 
 function App() {
   const [open, setOpen] = React.useState<boolean>(false);
+  const [login, setLogin] = React.useState<boolean>(false);
+  const [user, setUser] = React.useState<User>('visitor');
   const [books, setBooks] = React.useState<IBook[]>();
   const [ temp, setTemp ] = React.useState<IBook[]>();
+  const [book, setBook] = React.useState<IBook | null>(null);
 
   function filterBooks(text): void {
     if (text === '') setBooks(temp);
-    setBooks(temp?.filter(book => book.title.toLowerCase().includes(text.toLowerCase()) || book.author.toLowerCase().includes(text.toLowerCase()) || book.uploader.toLowerCase().includes(text.toLowerCase())));
+    setBooks(temp?.filter(book => book.title.toLowerCase().includes(text.toLowerCase()) || book.dept.toLowerCase().includes(text.toLowerCase()) || book.uploader.toLowerCase().includes(text.toLowerCase())));
   }
 
   React.useEffect(() => {
@@ -41,23 +48,34 @@ function App() {
         />
       </header>
       <div className="body">
-        {books &&
-          books.map((book: IBook, index: number) => (
+        {books && user === 'visitor' &&
+          books.filter(book => book.isVerified === true).reverse().map((book: IBook, index: number) => (
             <Book
-              title={book.title}
-              author={book.author}
-              pages={book.pages}
-              date={book.date}
-              uploader={book.uploader}
-              download={book.download}
+              book={book}
+              user={user}
+              setOpen={setOpen}
+              setBook={setBook}
+              setBooks={setBooks}
+              key={index}
+            />
+          ))}
+        {books && user === 'admin' && books.reverse().map((book: IBook, index: number) => (
+            <Book
+              book={book}
+              user={user}
+              setOpen={setOpen}
+              setBook={setBook}
+              setBooks={setBooks}
               key={index}
             />
           ))}
         <button type="button" id="upload-btn" onClick={() => setOpen(!open)}>
           Upload EBook
         </button>
+        { user === 'visitor' && <button type="button" id="upload-btn1" onClick={() => setLogin(!login)}>Login as Admin</button> }
       </div>
-      {open && <Upload setOpen={setOpen} open={open} setBooks={setBooks} />}
+      {open && <Upload setOpen={setOpen} open={open} setBooks={setBooks} book={book} />}
+      {login && <AdminLogin setLogin={setLogin} login={login} setUser={setUser} />}
     </div>
   );
 }
