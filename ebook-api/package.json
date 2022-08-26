@@ -18,7 +18,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "global-tunnel": "^1.2.0",
-    "mongoose": "^6.1.2",
+    "mongoose": "^6.4.6",
     "ts-node": "^10.4.0"
   }
 }
