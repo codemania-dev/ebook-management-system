@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
+import {PutObjectCommand, PutObjectCommandInput} from "@aws-sdk/client-s3";
 
 import { IBook } from './Book';
-import storage from '../firebase';
+import storage from '../s3';
 
 function Upload({setOpen, open, setBooks, book}) {
 
@@ -51,53 +51,102 @@ function Upload({setOpen, open, setBooks, book}) {
         setUploader('');
     }
 
-    function uploadEbook(): void {
-        if ([ title, dept, uploader ].includes('') || pages === 0 || file === undefined) {
-            setMessage('please fill out all fields!')
-            return;
-        }
+    async function uploadEbook() {
+      if ([title, dept, uploader].includes('') || pages === 0 || file === undefined) {
+        setMessage('please fill out all fields!')
+        return;
+      }
 
-        const fileRef = ref(storage, `${Date.now()}.pdf`);
+      const id = Date.now().toString().concat('.', file.name.split('.').pop()!.toLocaleLowerCase());
 
-        const uploadTask = uploadBytesResumable(fileRef, file);
+      const params: PutObjectCommandInput = {
+        Bucket: 'bookie',
+        Key: id,
+        Body: new Blob([new Uint8Array(await file.arrayBuffer())]),
+        ACL: 'public-read'
+      }
 
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {setMessage("Saving...");},
-          (error) => {
-            setMessage('Error occurred!');
-            return;
-          },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              
-                fetch(`${process.env.REACT_APP_API as string}upload-book`, {
-                  method: "POST",
-                  body: JSON.stringify({
-                    title,
-                    dept,
-                    pages: pages.toString(),
-                    uploader,
-                    download: downloadURL,
-                    date: new Date(Date.now()).toLocaleDateString(),
-                  }),
-                  headers: { "Content-Type": "application/json" },
-                })
-                  .then((res) => res.json())
-                  .then((res: IBook[]) => {
-                    // set books
-                    setBooks(res);
-                    clearInput();
-                    setOpen(!open);
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-            });
-          }
-        );
-
+      try {
+        console.log(params);
+        await storage.send(new PutObjectCommand(params));
+        fetch(`${process.env.REACT_APP_API as string}upload-book`, {
+          method: "POST",
+          body: JSON.stringify({
+            title,
+            dept,
+            pages: pages.toString(),
+            uploader,
+            download: (process.env.REACT_APP_STORAGE_URL as string).concat(params.Key!),
+            date: new Date(Date.now()).toLocaleDateString(),
+          }),
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((res) => res.json())
+          .then((res: IBook[]) => {
+            // set books
+            setBooks(res);
+            clearInput();
+            setOpen(!open);
+          })
+          .catch((err) => {
+            console.log(err);
+            setMessage('error occurred!')
+          });
+      } catch (err) {
+        console.log("Error", err);
+        setMessage('error occurred!')
+      }
     }
+
+
+
+    // function uploadEbook(): void {
+    //     if ([ title, dept, uploader ].includes('') || pages === 0 || file === undefined) {
+    //         setMessage('please fill out all fields!')
+    //         return;
+    //     }
+
+    //     const fileRef = ref(storage, `${Date.now()}.pdf`);
+
+    //     const uploadTask = uploadBytesResumable(fileRef, file);
+
+    //     uploadTask.on(
+    //       "state_changed",
+    //       (snapshot) => {setMessage("Saving...");},
+    //       (error) => {
+    //         setMessage('Error occurred!');
+    //         return;
+    //       },
+    //       () => {
+    //         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              
+    //             fetch(`${process.env.REACT_APP_API as string}upload-book`, {
+    //               method: "POST",
+    //               body: JSON.stringify({
+    //                 title,
+    //                 dept,
+    //                 pages: pages.toString(),
+    //                 uploader,
+    //                 download: downloadURL,
+    //                 date: new Date(Date.now()).toLocaleDateString(),
+    //               }),
+    //               headers: { "Content-Type": "application/json" },
+    //             })
+    //               .then((res) => res.json())
+    //               .then((res: IBook[]) => {
+    //                 // set books
+    //                 setBooks(res);
+    //                 clearInput();
+    //                 setOpen(!open);
+    //               })
+    //               .catch((err) => {
+    //                 console.log(err);
+    //               });
+    //         });
+    //       }
+    //     );
+
+    // }
 
   function updateEbook(): void {
 
